@@ -6,8 +6,18 @@ const int out_C = 5;
 const int enable_D = 6;
 const int out_D = 7;
 
-int counter;
-int counter_max;
+int counter = 0;
+int counter_max = 5;
+
+void _isr_routine_C(){
+  counter++;
+  if (counter == counter_max)
+  {
+    counter = 0;
+    digitalWrite(enable_C, LOW);
+    detachInterrupt(digitalPinToInterrupt(in_C));
+  }
+}
 
 void setup() {
   Serial.begin(9600);
@@ -63,6 +73,11 @@ void serialEvent() {
       case 'C':
         clear_pin(enable_D, out_D);
         break;
+
+      case 'Q':
+        attachInterrupt(digitalPinToInterrupt(in_C), _isr_routine_C, RISING);
+        enable(enable_C, 
+        break;
     }
   }
 }
@@ -103,36 +118,6 @@ void clear_pin(const int en_pin, const int out_pin)
   pinMode(out_pin, OUTPUT);
   digitalWrite(out_pin, LOW);
 }
-
-class Counter
-{
-  int interrupt_pin;
-  int output_pin;
-  int counter_max;
-  int counter = 0;
-  public:
-  Counter(int _interrupt_pin, int _output_pin, int _counter_max)
-  {
-    interrupt_pin = _interrupt_pin;
-    output_pin    = _output_pin
-    counter_max   = _counter_max;
-    pinMode(output_pin, OUTPUT);
-    pinMode(interrupt_pin ,INPUT_PULLUP);
-    digitalWrite(output_pin, HIGH);
-    attachInterrupt(digitalPinToInterrupt(interrupt_pin), this->_isr_routine(), RISING);
-  }
-
-  void _isr_routine()
-  {
-    counter++;
-    if (counter == counter_max)
-    {
-      counter = 0;
-      digitalWrite(output_pin, LOW);
-      detachInterrupt(digitalPinToInterrupt(interrupt_pin));
-    }
-  }
-};
 
 void loop() {
 }
