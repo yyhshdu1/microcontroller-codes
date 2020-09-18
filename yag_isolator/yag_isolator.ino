@@ -163,7 +163,7 @@ void serialEvent() {
   while (Serial.available()) {
     char c = (char)Serial.read();
     serial_command += c;
-    if (c == '\r'){
+    if (c == '\n'){
       serial_command.trim();
       handleSerial();
       serial_command = "";
