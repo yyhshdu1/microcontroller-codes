@@ -16,8 +16,10 @@ const int shutter_state     = 6;
 String serial_command = "";
 
 void setup(){
+    Serial.begin(9600);
+    
     pinMode(shutter_ctrl_out, OUTPUT);
-    pinMOde(shutter_state, OUTPUT);
+    pinMode(shutter_state, OUTPUT);
 }
 
 void handleSerial(){
@@ -34,14 +36,14 @@ void handleSerial(){
   else if (serial_command == "open")
   {
       open_shutter();
-      Serial.println('open')
+      Serial.println("open");
   }
   else if (serial_command == "close"){
       close_shutter();
-      Serial.println('close')
+      Serial.println("close");
   }
   else if (serial_command == "state"){
-      Serial.println(digitalWrite(shutter_ctrl_out));
+      Serial.println(digitalRead(shutter_ctrl_out));
   }
   else{
     Serial.print("invalid command : ");

@@ -151,7 +151,8 @@ void handleSerial(){
       case 'D':
         disable(enable_D);
         break;
-    } 
+    }
+  } 
   else if (serial_command.substring(0,6) == "status"){
     char c = serial_command.charAt(7);
     switch (c){
