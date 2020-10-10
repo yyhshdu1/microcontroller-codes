@@ -30,6 +30,7 @@ void MTD415::_writeCommand(String cmd){
 }
 
 int MTD415::_intReturnCMD(String cmd){
+
   delay(1);
   _serial->println(cmd);
   _response = this->_getResponse();

@@ -20,12 +20,17 @@
 
 #define DISPLAY_CYCLE 3
 
-int enable_lines[] = {2};
-int enable_buttons[] = {4};
+// add sufficient enable lines and buttons if more devices are added!
+int enable_lines[] = {2,9};
+int enable_buttons[] = {4,5};
 
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
+
+// don't forget to enable the serial line!
 MTD415 mtd415_1(&Serial1);
-MTD415State state(&mtd415_1);
+MTD415 mtd415_2(&Serial2);
+
+MTD415State state(&mtd415_1, &mtd415_2);
 DisplayControl display_ctrl(&display, &state);
 PhysicalControl physical_ctrl(&state, &display_ctrl, enable_lines, enable_buttons, DISPLAY_CYCLE);
 SerialControl serial_ctrl(&Serial, &state, &physical_ctrl, &display_ctrl);
@@ -39,6 +44,7 @@ void setup() {
   Serial.begin(115200);
   // Serial to MTD415 number 1
   Serial1.begin(115200);
+  Serial2.begin(115200);
   // Set up display
   Wire.setSDA(OLED_SDA);
   Wire.setSCL(OLED_SCL);
