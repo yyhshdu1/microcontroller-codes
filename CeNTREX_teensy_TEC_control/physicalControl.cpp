@@ -25,7 +25,7 @@ void PhysicalControl::setup(){
 
 void PhysicalControl::setEnable(int * arr){
   for (int dev = 0; dev < _devices; dev++){
-    digitalWrite(_enable[dev], arr[dev]);
+    digitalWrite(_enable[dev], !arr[dev]);
     _enable_state[dev] = arr[dev];
   }
 }
