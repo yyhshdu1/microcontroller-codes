@@ -17,6 +17,7 @@ class SerialControl{
     DisplayControl *_display_ctrl;
     Stream *_serial;
     String _response;
+    void _sendArray(bool * arr, int len);
     void _sendArray(int * arr, int len);
     void _sendArray(String * arr, int len);
     void _handleQuery();
@@ -25,6 +26,7 @@ class SerialControl{
     float _farray[4];
     int _iarray[4];
     String _sarray[4];
+    bool _barray[4];
   };
 
 #endif
