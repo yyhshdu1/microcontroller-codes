@@ -27,9 +27,20 @@ void SerialControl::printOptions(){
   _serial->println("P? : get proportional share(s)");
   _serial->println("I? : get integral share(s)");
   _serial->println("D? : get derivative share(s)");
+  _serial->println("S? : get state");
   _serial->println("To change value use Tx! where x is the new value.");
   _serial->println("cx! : reset error register of device x");
-  _serial->println("To enable TEC use ex! where x is the device indidicator, starting at 0.");
+  _serial->println("To enable TEC use ex! where x is the device state.");
+}
+
+void SerialControl::_sendArray(bool * arr, int len){
+  for (int i = 0; i < len; i++){
+    _serial->print(arr[i]);
+    if (i < len -1){
+      _serial->print(",");
+    }
+  }
+  _serial->print("\n");
 }
 
 void SerialControl::_sendArray(int * arr, int len){
@@ -116,6 +127,10 @@ void SerialControl::_handleQuery(){
     else if (_response == "D?"){
       _mtd415_state->getDerivative(_iarray);
       this->_sendArray(_iarray, _mtd415_state->devices);
+    }
+    else if (_response == "S?"){
+      _mtd415_state->getEnabled(_barray);
+      this->_sendArray(_barray, _mtd415_state->devices);
     }
     else if (_response == "?"){
       this->printOptions();
