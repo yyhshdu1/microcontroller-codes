@@ -119,6 +119,7 @@ void handleSerial(){
       }
       counter_running = true;
       counter = 0;
+      disable(enable_C);
       disable(enable_D);
       attachInterrupt(digitalPinToInterrupt(in_D), _isr_first_D, FALLING);
       Serial.print("qswitch ");
