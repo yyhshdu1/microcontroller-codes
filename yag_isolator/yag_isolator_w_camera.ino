@@ -19,6 +19,10 @@ enable (char)x    enable channel x, where x is either C or D (i.e. close switch)
 disable (char)x   disable channel x; where x is either C or D (i.e. open switch)
 */
 
+// us to wait before opening the switch for the camera pulse and qswitch pulse train
+// ensure that the camera pulse is always behind a qswitch pulse
+#define DELAY 18000
+
 // pin configuration
 const int in_C = 2;         // camera pulse input
 const int in_D = 3;         // qswitch pulse input
@@ -35,11 +39,13 @@ bool counter_running = false;
 // serial command string
 String serial_command = "";
 
+
 void _isr_final_D()
 {
   // disable the switch for port C/D on a falling edge interrupt
   // temperarily making out_C/D an output pin to discharge the input of the 
   // isolator to ensure immidate switching of the out signal
+  delayMicroseconds(DELAY);
   digitalWrite(enable_C,LOW);
   digitalWrite(enable_D,LOW);
   pinMode(out_C, OUTPUT);
@@ -55,6 +61,7 @@ void _isr_final_D()
 void _isr_first_D(){
   if (counter == 1){
     counter = 0;
+    delayMicroseconds(DELAY);
     digitalWrite(enable_C,HIGH);
     digitalWrite(enable_D,HIGH);
     detachInterrupt(digitalPinToInterrupt(in_D));
