@@ -1,11 +1,11 @@
 /*
 Code for Digital isolator V1.1 with Arduino Nano
-Intended to operate the YAG for CeNTREX, hooked up as follows:
+Intended to operate the YAG for CeNTREX with the EMCCD, hooked up as follows:
 
 CHANNELS  YAG
-VIA       flashlamp output from control device
+VIA       flashlamp input from control device
 VIB       qswitch output from control device
-VIC       flashlamp input
+VIC       camera input
 VID       qswitch input
 ENA_C     either input for the switch controlling VIC to VOC
           or output signalling if switch is open (LOW) or closed (HIGH)
