@@ -147,9 +147,11 @@ void handleSerial(){
     switch (c){
       case 'C':
         disable(enable_C);
+        Serial.println("disable C");
         break;
       case 'D':
         disable(enable_D);
+        Serial.println("disable D");
         break;
     }
   } 
@@ -160,7 +162,7 @@ void handleSerial(){
         Serial.println(digitalRead(enable_C));
         break;
       case 'D':
-        Serial.println(digitalRead(enable_C));
+        Serial.println(digitalRead(enable_D));
         break;
     } 
   }
