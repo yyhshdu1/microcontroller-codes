@@ -12,7 +12,9 @@
 OneWire oneWire(ONE_WIRE_BUS); 
 DallasTemperature sensors(&oneWire);
 
-const uint8_t sensor_address = 0x76;
+const uint8_t sensor_address = 0x77;
+const uint8_t chip_address = 0x58;
+bool  status;
 
 char ssid[] = "yale wireless";
 
@@ -26,7 +28,7 @@ char response[128];
 char mac[18];
 String mac_string;
 
-ESP8266WebServer server(80);
+//ESP8266WebServer server(80);
 
 void setup() {
   // put your setup code here, to run once:
@@ -36,21 +38,21 @@ void setup() {
   delay(500);
   Serial.println();
 
-  Serial.print("MAC: ");
-  Serial.println(WiFi.macAddress());
-  Serial.printf("Connecting to %s ", ssid);
-  WiFi.begin(ssid);
-  while (WiFi.status() != WL_CONNECTED)
-  {
-    digitalWrite(LED_BUILTIN, LOW);
-    delay(500);
-    digitalWrite(LED_BUILTIN, HIGH);
-    delay(500);
-    Serial.print(".");
-  }
-  Serial.println(" connected");
-  Serial.println(WiFi.localIP());
-  digitalWrite(LED_BUILTIN, HIGH);
+//  Serial.print("MAC: ");
+//  Serial.println(WiFi.macAddress());
+//  Serial.printf("Connecting to %s ", ssid);
+//  WiFi.begin(ssid);
+//  while (WiFi.status() != WL_CONNECTED)
+//  {
+//    digitalWrite(LED_BUILTIN, LOW);
+//    delay(500);
+//    digitalWrite(LED_BUILTIN, HIGH);
+//    delay(500);
+//    Serial.print(".");
+//  }
+//  Serial.println(" connected");
+//  Serial.println(WiFi.localIP());
+//  digitalWrite(LED_BUILTIN, HIGH);
 
   Wire.begin(D3, D4);
   Wire.setClock(100000);
@@ -69,28 +71,28 @@ void setup() {
                   
   sensors.begin();
 
-  server.on("/BME280", bme280);
-  server.on("/STATUS", statuspage);
-  server.on("/DS18B20", ds18b20);
-  server.begin();
-  Serial.println("Server Ready");
+//  server.on("/BME280", bme280);
+//  server.on("/STATUS", statuspage);
+//  server.on("/DS18B20", ds18b20);
+//  server.begin();
+//  Serial.println("Server Ready");
   delay(3000);
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
-  server.handleClient();
+//  server.handleClient();
 }
 
-void statuspage()
-{
-  digitalWrite(LED_BUILTIN, LOW);
-  mac_string = WiFi.macAddress();
-  mac_string.toCharArray(mac, 18);
-  sprintf(response, RESPONSESTATUS, mac, ssid, WiFi.localIP().toString().c_str());
-  server.send(200, "text/plain", response);
-  digitalWrite(LED_BUILTIN, HIGH);
-}
+//void statuspage()
+//{
+//  digitalWrite(LED_BUILTIN, LOW);
+//  mac_string = WiFi.macAddress();
+//  mac_string.toCharArray(mac, 18);
+//  sprintf(response, RESPONSESTATUS, mac, ssid, WiFi.localIP().toString().c_str());
+//  server.send(200, "text/plain", response);
+//  digitalWrite(LED_BUILTIN, HIGH);
+//}
 
 void ds18b20() {
   sensors.requestTemperatures();
@@ -99,7 +101,7 @@ void ds18b20() {
   Serial.print(t);
   Serial.println("");
   sprintf(response, RESPONSE_DS18B20, t);
-  server.send(200, "text/plain", response);
+//  server.send(200, "text/plain", response);
 }
 
 void bme280() {
@@ -112,10 +114,10 @@ void bme280() {
     Serial.printf("temperature : %f, humidity : %f, pressure : %f", t, h, p);
     Serial.println("");
     sprintf(response, RESPONSE_BME280, t, h, p);
-    server.send(200, "text/plain", response);
+//    server.send(200, "text/plain", response);
   }
-  else {
-    server.send(200, "text/plain", "BME280 not connected");
-  }
+//  else {
+//    server.send(200, "text/plain", "BME280 not connected");
+//  }
   digitalWrite(LED_BUILTIN, HIGH);
 }
